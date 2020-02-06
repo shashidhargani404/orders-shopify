@@ -8,14 +8,6 @@ import { startSetUser } from './actions/userAction'
 
 const store = configureStore()
 
-// store.subscribe( () => {
-//     console.log(store.getState())
-// })
-
-localStorage.getItem('x-auth-moneymath') && (
-    store.dispatch(startSetUser())
-)
-
 const element = (
     <Provider store={store}>
         <App />

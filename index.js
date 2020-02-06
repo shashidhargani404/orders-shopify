@@ -2,15 +2,29 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000
 
-require('./config/database')
+// require('./config/database')
 
 const cors = require('cors')
 app.use(cors())
-app.use(express.json())
+
+const bodyParser = require('body-parser')
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+    extended: true
+}))
 
 const router = require('./config/routes')
 
 app.use('/', router)
+
+app.get('/user', (req, res) => {
+    res.send('Home user')
+})
+
+app.post('/new-order', (req, res) => {
+    res.send('ok')
+    console.log('new-order placed')
+})
 
 const path = require('path')
 app.use(express.static(path.join(__dirname,"client/build"))) 
