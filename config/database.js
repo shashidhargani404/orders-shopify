@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb+srv://shashidhargani404:shashidhargani404@cluster-moneymath-pluii.mongodb.net/test?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://shopifyuser:shopifyuser@cluster-shopify-orders-51llu.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false

@@ -1,8 +1,14 @@
 const express = require('express')
-const app = express()
+const http = require('http')
+const socketIO = require('socket.io')
+
 const port = process.env.PORT || 3000
 
-// require('./config/database')
+const app = express()
+const server = http.createServer(app)
+const io = socketIO(server)
+
+require('./config/database')
 
 const cors = require('cors')
 app.use(cors())
@@ -15,16 +21,24 @@ app.use(bodyParser.urlencoded({
 
 const router = require('./config/routes')
 
-app.use('/', router)
-
-app.get('/user', (req, res) => {
-    res.send('Home user')
-})
-
+const Order = require('./app/models/Order')
+const _ = require('lodash')
 app.post('/new-order', (req, res) => {
-    res.send('ok')
-    console.log('new-order placed')
+    const { name, total_price, customer: { first_name, last_name, email, phone } } = req.body
+    const body = { name, total_price, first_name, last_name, email, phone }
+
+    const order = new Order(body)
+    order.save()
+        .then((order) => {
+            res.send('ok')
+            io.sockets.emit('new order', order)
+        })
+        .catch((err) => {
+            res.send(err)
+        })
 })
+
+app.use('/', router)
 
 const path = require('path')
 app.use(express.static(path.join(__dirname,"client/build"))) 
@@ -32,4 +46,11 @@ app.get("*",(req,res) => {
     res.sendFile(path.join(__dirname + "/client/build/index.html")) 
 }) 
 
-app.listen(port, _ => console.log('listening to the port ', port))
+io.on('connection', socket => {
+    console.log('user connected')
+    socket.on('disconnect', () => {
+        console.log('user disconnected')
+    })
+})
+
+server.listen(port, _ => console.log('listening to the port ', port))
