@@ -36,7 +36,6 @@ const editOrder = (order) => {
 }
 
 export const startEditOrder = (formData, props) => {
-    console.log(formData, props)
     return (dispatch) => {
         axios.put(`/orders/${props.match.params.id}`, formData)
             .then((response) => {
