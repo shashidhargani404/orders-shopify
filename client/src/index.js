@@ -12,11 +12,7 @@ import { startSetOrders, addOrder } from './actoins/ordersAction'
 const store = configureStore()
 store.dispatch(startSetOrders())
 
-store.subscribe(() => {
-    console.log(store.getState())
-})
-
-const socket = socketIOClient('localhost:3002/')
+const socket = socketIOClient('/')
 socket.on('new order', (order) => {
 store.dispatch(addOrder(order))
 })
