@@ -9,6 +9,7 @@ class CustomerEditForm extends React.Component {
             last_name: props.last_name || '',
             email: props.email || '',
             phone: props.phone ? props.phone.slice(3) : '',
+            phoneError: false,
             code: '+91',
             loading: false
         }
@@ -18,7 +19,11 @@ class CustomerEditForm extends React.Component {
 
         const { first_name, last_name, email, phone } = this.state
         const formData = { first_name, last_name, email, phone: '+91' + phone } 
-        if(last_name && (email || phone)) {
+        if( phone && phone.length !== 10) {
+            this.setState({
+                phoneError: true
+            })
+        } else if(last_name && (email || phone)) {
             this.props.handleSubmit(formData)
             this.setState({
                 loading: true
@@ -39,12 +44,12 @@ class CustomerEditForm extends React.Component {
         }
     }
     render() {
-        const { first_name, last_name, email, phone, code, loading } = this.state
+        const { first_name, last_name, email, phone, phoneError, code, loading } = this.state
         const validFirstName = first_name.length > 2 ? "form-control is-valid" : "form-control"
         const validLastName = last_name.length > 2 ? "form-control is-valid" : "form-control is-invalid"
         const emailValidater = /\S+@\S+\.\S+/
-        const validEmail = emailValidater.test(email) ? "form-control is-valid" : "form-control is-invalid"
-        const validPhone = phone.length == 10 ? "form-control is-valid" : "form-control is-invalid"
+        const validEmail = emailValidater.test(email) || phone ? "form-control is-valid" : "form-control is-invalid"
+        const validPhone = phone.length === 10 || email ? "form-control is-valid" : "form-control is-invalid"
         return (
             <div className="container p-4" style={{width: '500px'}}>
                 <h4 className="mb-3">Edit Customer Details</h4>
@@ -72,7 +77,9 @@ class CustomerEditForm extends React.Component {
                             </div>
                             <input type="phone" name="phone" value={phone} onChange={this.handleChange} className={validPhone} id="exampleInputPhone" placeholder="Enter mobile number" />
                         </div>
-                        { !phone ? <p className="text-danger mt-2" style={{fontSize: '14px'}} >* Phone number NA</p>: ''}
+                        { !phone ? <p className="text-danger mt-2" style={{fontSize: '14px'}} >* Phone number NA.</p> : (
+                            phoneError ? <p className="text-danger mt-2" style={{fontSize: '14px'}} >* It requires 10 digits.</p>: ''
+                        )}
                     </div>
                     <button type="submit" className="btn btn-primary">Save</button>
                 </form>
