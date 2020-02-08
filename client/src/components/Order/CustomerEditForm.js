@@ -15,12 +15,17 @@ class CustomerEditForm extends React.Component {
     }
     handleSubmit = e => {
         e.preventDefault()
-        this.setState({
-            loading: true
-        })
+
         const { first_name, last_name, email, phone } = this.state
         const formData = { first_name, last_name, email, phone: '+91' + phone } 
-        this.props.handleSubmit(formData)
+        if(last_name && (email || phone)) {
+            this.props.handleSubmit(formData)
+            this.setState({
+                loading: true
+            })
+        } else {
+            window.alert('Fields are required!')
+        }
     }
     handleChange = e => {
         if(e.target.name === 'phone' && !isNaN(e.target.value) && e.target.value.length <= 10) {
@@ -47,16 +52,16 @@ class CustomerEditForm extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
                         <label htmlFor="first_name">First name</label>
-                        <input type="text" name="first_name" value={first_name} onChange={this.handleChange} className={validFirstName} id="first_name" aria-describedby="first_name" placeholder="First name" required />
+                        <input type="text" name="first_name" value={first_name} onChange={this.handleChange} className={validFirstName} id="first_name" aria-describedby="first_name" placeholder="First name"  />
                         { !first_name ? <p className="text-danger mt-2" style={{fontSize: '13px'}} >* First name NA</p>: ''}
                     </div>
                     <div className="form-group">
                         <label htmlFor="last_name">Last name</label>
-                        <input type="text" name="last_name" value={last_name} onChange={this.handleChange} className={validLastName} id="last_name" aria-describedby="last_name" placeholder="Last name" required />
+                        <input type="text" name="last_name" value={last_name} onChange={this.handleChange} className={validLastName} id="last_name" aria-describedby="last_name" placeholder="Last name"  />
                     </div>
                     <div className="form-group">
                         <label htmlFor="exampleInputEmail1">Email address</label>
-                        <input type="email" name="email" value={email} onChange={this.handleChange} className={validEmail} id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email address" required />
+                        <input type="email" name="email" value={email} onChange={this.handleChange} className={validEmail} id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email address" />
                         { !email ? <p className="text-danger mt-2" style={{fontSize: '14px'}} >* Email NA</p>: ''}
                     </div>
                     <div className="form-group">
@@ -65,7 +70,7 @@ class CustomerEditForm extends React.Component {
                             <div className="input-group-prepend">
                                 <div className="input-group-text">{ code }</div>
                             </div>
-                            <input type="phone" name="phone" value={phone} onChange={this.handleChange} className={validPhone} id="exampleInputPhone" placeholder="Enter mobile number" required />
+                            <input type="phone" name="phone" value={phone} onChange={this.handleChange} className={validPhone} id="exampleInputPhone" placeholder="Enter mobile number" />
                         </div>
                         { !phone ? <p className="text-danger mt-2" style={{fontSize: '14px'}} >* Phone number NA</p>: ''}
                     </div>

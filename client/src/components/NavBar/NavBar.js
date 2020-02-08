@@ -1,12 +1,11 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function NavBar(props) {
     return (
         <nav className="navbar navbar-dark bg-dark sticky-top">
-            <a className="navbar-brand" href="#">
-                <img src="/docs/4.3/assets/brand/bootstrap-solid.svg" width="30" height="30" className="d-inline-block align-top" alt="" />
-                <span className="font-weight-bold">Shopify - Book Store Orders</span>
-            </a>
+            <Link to="/" className="text-decoration-none" ><span className="font-weight-bold text-light" style={{fontSize: '24px', marginLeft: '30px'}}>Shopify - Book Store Orders</span></Link>
+            <a href="https://saahityabookstore.myshopify.com/" target="_blank" className="pr-4 text-light" >Store</a>
         </nav>
     )
 }

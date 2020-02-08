@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost:27017/shopify-orders', {
+mongoose.connect('mongodb+srv://shopifyuser:shopifyuser@cluster-shopify-orders-51llu.mongodb.net/test?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false

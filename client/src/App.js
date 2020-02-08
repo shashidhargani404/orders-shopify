@@ -9,7 +9,7 @@ function App(props) {
   return (
     <BrowserRouter>
       <NavBar />
-      
+
       <Route path="/" component={Order} exact={true} />
       <Route path="/customers/:id" component={ CustomerEdit } />
     </BrowserRouter>

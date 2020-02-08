@@ -26,16 +26,19 @@ class OrderList extends React.Component {
     render() {
         return (
             <div className="p-5" >
-                <h4 className="pb-2" >Total Orders - { this.props.orders.length }</h4>
+                <h3 className="pb-2" >Total Orders - { this.props.orders.length }</h3>
+                <div>
+                
+                </div>
                 {
                     this.state.newOrder ? (
                         <div class="alert alert-primary" role="alert">
-                            A new product is ordered just now.
+                            Hey congrats, You got a new order!
                         </div>
                     ) : ''
                 }
-                <table className="table">
-                    <thead className="bg-white">
+                <table className="table table-hover" style={{backgroundColor: 'rgb(240,240,240)'}}>
+                    <thead className="bg-secondary text-light">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Order</th>
@@ -51,7 +54,7 @@ class OrderList extends React.Component {
                                     <tr key={order._id}>
                                         <th scope="row">{ index + 1 }</th>
                                         <td>{ order.name }</td>
-                                        <td> { new Date(Date.parse(order.created_at)).toLocaleString() } </td>
+                                        <td> { moment(order.created_at).format('MMM Do YY, h:mm a') } </td>
                                         <td>{ order.first_name + ' ' + order.last_name }
                                             <Link to={`/customers/${order._id}`}><FaEdit className="ml-2" /></Link>
                                         </td>
